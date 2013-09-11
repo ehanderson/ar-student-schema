@@ -10,6 +10,7 @@ describe Student, "#name and #age" do
     Student.delete_all
 
     @student = Student.new
+
     @student.assign_attributes(
       :first_name => "Happy",
       :last_name => "Gilmore",
