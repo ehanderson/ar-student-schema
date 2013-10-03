@@ -1,21 +1,16 @@
 require_relative '../../db/config'
-require 'date'
+ 
 
 class Student < ActiveRecord::Base
-# implement your Student model here
-  validates :email, :format => { :with => /.+@.+\..{2,}/, message: "Only valid emails allowed" }
-  validates :email, :uniqueness => true
-  validates :age, :numericality => { greater_than: 5 }
-  validates :phone, :format => { :with => /\d{10}/, message: "Only valid phone numbers allowed" }
+  validates :email, uniqueness: true, format: {with: /\w+\@\w+\.\w{2,}/i}
+  validates :age, numericality: { greater_than: 5 }
+  validates :phone, format: {with: /\({0,1}\d{3}\){0,1}\s{0,1}(\.|-){0,1}\d{3}(\.|-){0,1}\d{4}\s{0,1}(ext|x){0,1}\d*/}
 
   def name
-    "#{self.first_name} #{self.last_name}"    
+    "#{first_name} #{last_name}"
   end
 
   def age
-    now = Date.today
-    age = now.year - self.birthday.year - ((now.month > self.birthday.month || (now.month == self.birthday.month && now.day >= self.birthday.day)) ? 0 : 1)
+    @age = Date.today.year - birthday.year
   end
-
-
 end
